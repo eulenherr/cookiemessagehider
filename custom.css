@@ -1,8 +1,0 @@
-* [class*=cookie], * [class*=Cookie] {
-	display: none;
-	margin-left: -99999px;
-	margin-top: -99999px;
-	position: absolute;
-	left: -99999px;
-	top: -99999px;
-}
