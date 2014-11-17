@@ -1,4 +1,5 @@
-* [class*=cookie], * [class*=Cookie] {
+table[class*=cookie], aside[class*=cookie], div[class*=cookie], span[class*=cookie],
+table[class*=Cookie], aside[class*=Cookie], div[class*=Cookie], span[class*=Cookie] {
 	display: none;
 	margin-left: -99999px;
 	margin-top: -99999px;
