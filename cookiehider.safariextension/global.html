@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>No cookie</title>
+        <script>
+            var thereIsCookie = function() {
+                safari.extension.toolbarItems[0].badge = 1;
+            };
+
+            var thereIsNoCookie = function() {
+                safari.extension.toolbarItems[0].badge = 0;
+            };
+
+            var currentTab;
+
+            var askToCheck = function(tab) {
+                currentTab && currentTab !== tab && currentTab.page.dispatchMessage("stopCheck");
+                tab.page.dispatchMessage("startCheck");
+                currentTab = tab;
+            };
+             
+            safari.application.addEventListener(
+                "activate", 
+                function(a) {
+                    askToCheck(a.target.activeTab || a.target);
+                }, 
+                true);
+            
+            safari.application.addEventListener(
+                "validate", 
+                function(a) {
+                    askToCheck(safari.application.activeBrowserWindow.activeTab);
+                }, 
+                true);
+
+            safari.application.addEventListener("message",function(event) {
+                if(event.target !== event.target.browserWindow.activeTab) return;
+                if(event.name === "cookie" || (event.name === "noCookie" && event.target.url === event.target.lastCookieURL)) {
+                    event.target.lastCookieURL = event.target.url;
+                    event.target.page.dispatchMessage("stopCheck","");
+                    thereIsCookie();
+                } else if(event.name === "noCookie") {
+                    thereIsNoCookie();
+                }
+            });
+        </script>
+    </head>
+    <body></body>
+</html>
